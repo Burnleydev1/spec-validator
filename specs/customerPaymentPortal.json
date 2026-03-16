@@ -1,0 +1,3140 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "CPS - Customer Portal API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://api.example.com/v1/transaction-api/"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "Payment Registration Transaction"
+        },
+        {
+            "name": "Corporate Group"
+        },
+        {
+            "name": "Corporate Subsidiary"
+        },
+        {
+            "name": "Customer"
+        },
+        {
+            "name": "Customer Wallet"
+        },
+        {
+            "name": "Payment"
+        },
+        {
+            "name": "Reseller"
+        },
+        {
+            "name": "Theme"
+        }
+    ],
+    "paths": {
+        "/payment-registration-transaction/{uuid}/receipt": {
+            "get": {
+                "tags": [
+                    "Payment Registration Transaction"
+                ],
+                "summary": "Download a Receipt PDF file",
+                "operationId": "getPaymentRegistrationTransactionReceiptPdf",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "description": "Unique transaction identifier"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Receipt PDF file downloaded successfully",
+                        "content": {
+                            "application/pdf": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "409": {
+                        "$ref": "#/components/responses/Conflict"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    }
+                }
+            }
+        },
+        "/corporate-group/{corporate_group_id}": {
+            "get": {
+                "tags": [
+                    "Corporate Group"
+                ],
+                "summary": "Get Corporate Group By Id",
+                "operationId": "getCorporateGroupById",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request.\nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "corporate_group_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Corporate Group Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CorporateGroupResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/corporate-group/{corporate_group_id}/logo": {
+            "get": {
+                "tags": [
+                    "Corporate Group"
+                ],
+                "summary": "Get Corporate Group Logo",
+                "operationId": "getCorporateGroupLogo",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "corporate_group_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Corporate Group Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/LogoResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/corporate-group/{corporate_group_id}/corporate-subsidiary": {
+            "get": {
+                "tags": [
+                    "Corporate Group"
+                ],
+                "summary": "Get the Collection of Corporate Subsidiaries of a Group",
+                "operationId": "getCorporateGroupCorporateSubsidiaries",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "corporate_group_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Corporate Group Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CorporateSubsidiaryCollectionResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/corporate-subsidiary/{corporate_subsidiary_id}": {
+            "get": {
+                "tags": [
+                    "Corporate Subsidiary"
+                ],
+                "summary": "Get Corporate Subsidiary By Id",
+                "operationId": "getCorporateSubsidiaryById",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "corporate_subsidiary_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Corporate Subsidiary Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CorporateSubsidiaryResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/corporate-subsidiary/{corporate_subsidiary_id}/logo": {
+            "get": {
+                "tags": [
+                    "Corporate Subsidiary"
+                ],
+                "summary": "Get Corporate Subsidiary Logo",
+                "operationId": "getCorporateSubsidiaryLogo",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "corporate_subsidiary_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Corporate Subsidiary Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/LogoResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/corporate-subsidiary/{corporate_subsidiary_id}/payment-method": {
+            "get": {
+                "tags": [
+                    "Corporate Subsidiary"
+                ],
+                "summary": "Get Corporate Subsidiary Payment Method Collection",
+                "operationId": "getCorporateSubsidiaryPaymentMethodCollection",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "corporate_subsidiary_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Corporate Subsidiary Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/PaymentMethodCollectionResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/corporate-subsidiary/{corporate_subsidiary_id}/corporate-service": {
+            "get": {
+                "tags": [
+                    "Corporate Subsidiary"
+                ],
+                "summary": "Get Corporate Subsidiary Service Collection",
+                "operationId": "getCorporateSubsidiaryServiceCollection",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "corporate_subsidiary_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Corporate Subsidiary Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/ServiceCollectionResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/corporate-subsidiary/{corporate_subsidiary_id}/corporate-service/{service_id}": {
+            "get": {
+                "tags": [
+                    "Corporate Subsidiary"
+                ],
+                "summary": "Get Corporate Subsidiary Service",
+                "operationId": "getCorporateSubsidiaryService",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "corporate_subsidiary_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Corporate Subsidiary Id"
+                    },
+                    {
+                        "name": "service_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Service Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/ServiceResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/corporate-subsidiary/{corporate_subsidiary_id}/customer/{customer_business_no}": {
+            "get": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Get Customer By Business Number",
+                "operationId": "getCustomerByBusinessNumber",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "corporate_subsidiary_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Corporate Subsidiary Id"
+                    },
+                    {
+                        "name": "customer_business_no",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Customer Business Number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CustomerResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/{customer_id}": {
+            "get": {
+                "tags": [
+                    "Customer"
+                ],
+                "summary": "Get Customer By ID",
+                "operationId": "getCustomerById",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "customer_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Customer ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CustomerResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/{customer_id}/wallet": {
+            "get": {
+                "tags": [
+                    "Customer Wallet"
+                ],
+                "summary": "Get Customer Wallet collection",
+                "operationId": "getCustomerWalletCollection",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "customer_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Customer ID"
+                    },
+                    {
+                        "in": "query",
+                        "name": "tsp_code",
+                        "required": true,
+                        "description": "`tsp_code` Univeral TSP Code.\n",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "example": 120
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "sort",
+                        "required": false,
+                        "description": "An array containing field and direction for sorting\n|Field|Type|Description|\n|-----|----|-----------|\n|customer_id|integer|Customer ID|\n|tsp_code|string|Univeral TSP Code|\n|wallet_identifier|string|Wallet Identifier|\n|is_preferred|integer|Preferred wallet|\n",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "country",
+                            "ASC"
+                        ]
+                    },
+                    {
+                        "in": "query",
+                        "name": "range",
+                        "required": true,
+                        "description": "An array containing from and to rande of displayed items\n",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": [
+                            0,
+                            50
+                        ]
+                    },
+                    {
+                        "in": "query",
+                        "name": "filter",
+                        "required": false,
+                        "description": "An object containing all filter values\n|Filter|Type|Description|\n|------|----|-----------|\n|customer_id|integer|Customer ID|\n|tsp_code|integer|Universal TSP Code|\n|wallet_identifier|string|Wallet Identifier|\n|is_preferred|integer|Preferred wallet|\n",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "{\"name\": \"SABC\", \"created_at\": \"2020-10-03\", \"country\": [\"CM\", \"GA\"]}\n"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CustomerWalletCollectionResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/customer/{customer_id}/wallet/{customer_wallet_id}": {
+            "get": {
+                "tags": [
+                    "Customer Wallet"
+                ],
+                "summary": "Get a single Customer Wallet",
+                "operationId": "getCustomerWalletById",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "customer_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Customer ID"
+                    },
+                    {
+                        "name": "customer_wallet_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Customer Wallet ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CustomerWalletResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/price": {
+            "get": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Get Payment Price",
+                "operationId": "getPaymentPrice",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "payment_method_id",
+                        "required": true,
+                        "description": "ID of the payment method",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 120
+                    },
+                    {
+                        "in": "query",
+                        "name": "corporate_subsidiary_id",
+                        "required": true,
+                        "description": "ID of the corporate subsidiary",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 120
+                    },
+                    {
+                        "in": "query",
+                        "name": "corporate_service_id",
+                        "required": true,
+                        "description": "ID of the corporate service",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 120
+                    },
+                    {
+                        "in": "query",
+                        "name": "amount",
+                        "required": true,
+                        "description": "The amount the user is willing to pay",
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        },
+                        "example": 120.5
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/PaymentPriceResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/pay": {
+            "post": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Send a Payment Request",
+                "operationId": "postPaymentPay",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/PaymentPayRequest"
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/PaymentPayResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/payment/pay/{payment_item_id}": {
+            "get": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Get The Status Of The Payment",
+                "operationId": "getPaymentStatus",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "payment_item_id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Payment item ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": 120
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/PaymentPayResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reseller/{reseller_id}": {
+            "get": {
+                "tags": [
+                    "Reseller"
+                ],
+                "summary": "Get Reseller By Id",
+                "operationId": "getResellerById",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "reseller_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Reseller Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/ResellerResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reseller/{reseller_id}/logo": {
+            "get": {
+                "tags": [
+                    "Reseller"
+                ],
+                "summary": "Get Reseller Logo",
+                "operationId": "getResellerLogo",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "reseller_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Reseller Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/LogoResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reseller/{reseller_id}/corporate-subsidiary": {
+            "get": {
+                "tags": [
+                    "Reseller"
+                ],
+                "summary": "Get the Collection of Corporate Subsidiaries of a Reseller",
+                "operationId": "getResellerCorporateSubsidiaries",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "reseller_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Reseller Id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CorporateSubsidiaryCollectionResponse"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/theme/by-url/{url}": {
+            "get": {
+                "tags": [
+                    "Theme"
+                ],
+                "summary": "Get theme by url",
+                "operationId": "getTheme",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "url",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Unique URL String"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/ThemeResponse"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/theme/{theme_id}/corporate-group": {
+            "get": {
+                "tags": [
+                    "Theme"
+                ],
+                "summary": "Get corporate group by theme",
+                "operationId": "getThemeCorporateGroup",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "theme_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Theme ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CorporateGroupResponse"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/theme/{theme_id}/corporate-subsidiary": {
+            "get": {
+                "tags": [
+                    "Theme"
+                ],
+                "summary": "Get corporate subsidiary by theme",
+                "operationId": "getThemeCorporateSubsidiary",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "theme_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Theme ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/CorporateSubsidiaryResponse"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/theme/{theme_id}/reseller": {
+            "get": {
+                "tags": [
+                    "Theme"
+                ],
+                "summary": "Get reseller by theme",
+                "operationId": "getThemeReseller",
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-correlation-id",
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "theme_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "description": "Theme ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/ResellerResponse"
+                    },
+                    "default": {
+                        "description": "unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "requestBodies": {
+            "PaymentPayRequest": {
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/PaymentPayObject"
+                        }
+                    }
+                }
+            }
+        },
+        "responses": {
+            "PaymentPriceResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/PaymentPrice"
+                        }
+                    }
+                }
+            },
+            "PaymentPayResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/PaymentPayStatus"
+                        }
+                    }
+                }
+            },
+            "ResellerResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Reseller"
+                        }
+                    }
+                }
+            },
+            "CorporateGroupResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/CorporateGroup"
+                        }
+                    }
+                }
+            },
+            "CorporateSubsidiaryResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/CorporateSubsidiary"
+                        }
+                    }
+                }
+            },
+            "CorporateSubsidiaryCollectionResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    "content-range": {
+                        "required": false,
+                        "description": "Required by the front-end to properly handle pagination   \nThe format is \"`{arbitrary entity name}` `{first item in set}`-`{last item in set}`/`{total number of items}`\"\n",
+                        "schema": {
+                            "type": "string",
+                            "example": "reseller 1-10/100"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/CorporateSubsidiary"
+                            }
+                        }
+                    }
+                }
+            },
+            "PaymentMethodCollectionResponse": {
+                "description": "Collection of Payment Methods",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    "content-range": {
+                        "required": false,
+                        "description": "Required by the front-end to properly handle pagination   \nThe format is \"`{arbitrary entity name}` `{first item in set}`-`{last item in set}`/`{total number of items}`\"\n",
+                        "schema": {
+                            "type": "string",
+                            "example": "reseller 1-10/100"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/PaymentMethod"
+                            }
+                        }
+                    }
+                }
+            },
+            "ServiceCollectionResponse": {
+                "description": "Collection of Corporate Services",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    "content-range": {
+                        "required": false,
+                        "description": "Required by the front-end to properly handle pagination   \nThe format is \"`{arbitrary entity name}` `{first item in set}`-`{last item in set}`/`{total number of items}`\"\n",
+                        "schema": {
+                            "type": "string",
+                            "example": "reseller 1-10/100"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/CorporateSubsidiaryServiceConfig"
+                            }
+                        }
+                    }
+                }
+            },
+            "ServiceResponse": {
+                "description": "Corporate Service",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/CorporateSubsidiaryServiceConfig"
+                        }
+                    }
+                }
+            },
+            "ThemeResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Theme"
+                        }
+                    }
+                }
+            },
+            "ThemeCollectionResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    "content-range": {
+                        "required": false,
+                        "description": "Required by the front-end to properly handle pagination   \nThe format is \"`{arbitrary entity name}` `{first item in set}`-`{last item in set}`/`{total number of items}`\"\n",
+                        "schema": {
+                            "type": "string",
+                            "example": "reseller 1-10/100"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/Theme"
+                            }
+                        }
+                    }
+                }
+            },
+            "CustomerWalletCollectionResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    "content-range": {
+                        "required": false,
+                        "description": "Required by the front-end to properly handle pagination   \nThe format is \"`{arbitrary entity name}` `{first item in set}`-`{last item in set}`/`{total number of items}`\"\n",
+                        "schema": {
+                            "type": "string",
+                            "example": "reseller 1-10/100"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/components/schemas/CustomerWallet"
+                            }
+                        }
+                    }
+                }
+            },
+            "CustomerWalletResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/CustomerWallet"
+                        }
+                    }
+                }
+            },
+            "CustomerResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Customer"
+                        }
+                    }
+                }
+            },
+            "LogoResponse": {
+                "description": "Expected response to a valid request",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "image/jpeg": {
+                        "schema": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    },
+                    "image/png": {
+                        "schema": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    },
+                    "image/gif": {
+                        "schema": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    }
+                }
+            },
+            "NotFound": {
+                "description": "The specified resource was not found",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            },
+            "BadRequest": {
+                "description": "The specified resource did not pass validation rules",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            },
+            "Forbidden": {
+                "description": "Access to the requested resource is forbidden",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            },
+            "Conflict": {
+                "description": "The specified resource is conflicted with the current service state",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            },
+            "Unauthorized": {
+                "description": "Authorization required to get access to the specified resource",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            },
+            "InternalServerError": {
+                "description": "Something went wrong on the server side",
+                "headers": {
+                    "x-correlation-id": {
+                        "required": false,
+                        "description": "Unique identifier for every request. \nCan be used for tracking down answers \nwith technical support. \nUses the ULID format (a time-based, sortable UUID). \nNote this will be different for every request.\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "schemas": {
+            "CorporateGroup": {
+                "type": "object",
+                "required": [
+                    "region_code",
+                    "region_name",
+                    "city",
+                    "name",
+                    "name_friendly",
+                    "vat_no",
+                    "company_reg_no"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123
+                    },
+                    "reseller_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123,
+                        "description": "Reseller Identifier"
+                    },
+                    "country": {
+                        "type": "string",
+                        "maxLength": 2,
+                        "example": "CM"
+                    },
+                    "region_code": {
+                        "type": "string",
+                        "maxLength": 10,
+                        "description": "optional region code"
+                    },
+                    "region_name": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "description": "region name"
+                    },
+                    "sub_region_code": {
+                        "type": "string",
+                        "maxLength": 16,
+                        "description": "optional sub region code"
+                    },
+                    "sub_region_name": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "description": "optional sub region name"
+                    },
+                    "city": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "name of the city"
+                    },
+                    "address": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "address of the group"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "SABC"
+                    },
+                    "name_friendly": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Groupe SABC"
+                    },
+                    "tax_id": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "vat_no": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "company_reg_no": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "logo": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "/static/logos/logo-v1.jpeg",
+                        "description": "Path to binary image file of the logo on files store"
+                    }
+                }
+            },
+            "CorporateSubsidiary": {
+                "type": "object",
+                "required": [
+                    "corporate_group_id",
+                    "name",
+                    "external_name_short",
+                    "external_name_long",
+                    "country",
+                    "region_code",
+                    "region_name",
+                    "city",
+                    "vat_no",
+                    "company_reg_no",
+                    "max_amount"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123
+                    },
+                    "corporate_group_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123
+                    },
+                    "reseller_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123,
+                        "description": "Reseller Identifier"
+                    },
+                    "theme_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123,
+                        "description": "Theme Identifier"
+                    },
+                    "business_id": {
+                        "type": "string",
+                        "maxLength": 9,
+                        "example": "CMCP00011",
+                        "description": "Unique url slug for the corporate subsidiary"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "external_name_short": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "description": "External short name of the corporate subsidiary"
+                    },
+                    "external_name_long": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "External long name of the corporate subsidiary"
+                    },
+                    "country": {
+                        "type": "string",
+                        "maxLength": 2,
+                        "example": "CM"
+                    },
+                    "region_code": {
+                        "type": "string",
+                        "maxLength": 10,
+                        "description": "Optional region code"
+                    },
+                    "region_name": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "description": "Region name"
+                    },
+                    "sub_region_code": {
+                        "type": "string",
+                        "maxLength": 16,
+                        "description": "Optional sub region code"
+                    },
+                    "sub_region_name": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "description": "Optional sub region name"
+                    },
+                    "city": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "nullable": true,
+                        "default": null,
+                        "example": "Douala"
+                    },
+                    "address": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "nullable": true,
+                        "default": null,
+                        "example": "Subsidiary address"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 32,
+                        "nullable": true,
+                        "default": null,
+                        "example": "+1 234 567 890"
+                    },
+                    "email": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "nullable": true,
+                        "default": null,
+                        "example": "someone@example.com"
+                    },
+                    "short_code": {
+                        "type": "string",
+                        "maxLength": 16
+                    },
+                    "accounting_code": {
+                        "type": "string",
+                        "maxLength": 16
+                    },
+                    "tax_id": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "vat_no": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "company_reg_no": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "is_erp_integrated": {
+                        "type": "boolean",
+                        "description": "Specifies if ERP connector is available and configued for the\nCorporate Group. This value determines whether async requests such\nas remote customer lookup, payment registrations, and settlements\nwill be performed\n"
+                    },
+                    "max_amount": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Maximum Payment Amount accepted for a payment to any bank of this\nsubsidiary.\n"
+                    },
+                    "logo": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "/static/logos/logo-v1.jpeg",
+                        "description": "Path to binary image file of the logo on files store"
+                    }
+                }
+            },
+            "PaymentPrice": {
+                "type": "object",
+                "required": [
+                    "amount",
+                    "total_fees",
+                    "total_amount",
+                    "calculated_at",
+                    "region_name",
+                    "city"
+                ],
+                "properties": {
+                    "amount": {
+                        "type": "integer",
+                        "format": "float",
+                        "example": 100,
+                        "description": "Base amount to be paid"
+                    },
+                    "total_fees": {
+                        "type": "integer",
+                        "format": "float",
+                        "example": 20,
+                        "description": "Total of all service fees"
+                    },
+                    "total_amount": {
+                        "type": "integer",
+                        "format": "float",
+                        "example": 120,
+                        "description": "Total amount including all fees"
+                    },
+                    "calculated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-01T12:00:00Z",
+                        "description": "Timestamp when pricing was calculated"
+                    }
+                }
+            },
+            "PaymentPayObject": {
+                "type": "object",
+                "required": [
+                    "amount",
+                    "corporate_subsidiary_id",
+                    "payment_method_id",
+                    "corporate_service_id",
+                    "channel"
+                ],
+                "properties": {
+                    "amount": {
+                        "type": "integer",
+                        "format": "float",
+                        "example": 100,
+                        "description": "The amount that the customer is paying without fees"
+                    },
+                    "corporate_subsidiary_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 120,
+                        "description": "Corporate Subsidiary ID"
+                    },
+                    "payment_method_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 120,
+                        "description": "Payment Method ID"
+                    },
+                    "corporate_service_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 120,
+                        "description": "Corporate Service ID"
+                    },
+                    "channel": {
+                        "$ref": "#/components/schemas/enumChannel"
+                    },
+                    "customer_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 120,
+                        "description": "Customer ID"
+                    },
+                    "customer_wallet_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 120,
+                        "description": "Customer Wallet ID"
+                    },
+                    "instrument_account_owner": {
+                        "type": "string",
+                        "description": "Payment instrument account owner",
+                        "example": "John Smith"
+                    },
+                    "instrument_account_number": {
+                        "type": "string",
+                        "description": "Payment instrument account number",
+                        "example": "+1 111 111 1111"
+                    },
+                    "notification_email": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "nullable": true,
+                        "default": null,
+                        "example": "someone@example.com"
+                    }
+                }
+            },
+            "PaymentPayStatus": {
+                "type": "object",
+                "properties": {
+                    "payment_item_id": {
+                        "type": "string",
+                        "description": "Unique payment item ID"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "example": 100,
+                        "description": "Amount of the payment"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/enumPaymentStatus"
+                    },
+                    "processed_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-11-01T12:00:00Z",
+                        "description": "Timestamp when the payment was processed by the instrument\n"
+                    },
+                    "error": {
+                        "type": "string",
+                        "format": "json",
+                        "example": {
+                            "error fields go here": null
+                        },
+                        "description": "Forwarded error from the payment instrument"
+                    }
+                }
+            },
+            "Reseller": {
+                "type": "object",
+                "required": [
+                    "theme_id",
+                    "name",
+                    "country",
+                    "region_code",
+                    "region_name",
+                    "city"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123,
+                        "description": "Unique Reseller Identifier"
+                    },
+                    "theme_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123,
+                        "description": "Unique Theme Identifier"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Banque Atlantique",
+                        "description": "The name of the Reseller"
+                    },
+                    "country": {
+                        "type": "string",
+                        "maxLength": 2,
+                        "example": "CM",
+                        "description": "ISO Alpha-2 Code of the Country"
+                    },
+                    "region_code": {
+                        "type": "string",
+                        "maxLength": 10,
+                        "description": "optional region code"
+                    },
+                    "region_name": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "description": "region name"
+                    },
+                    "sub_region_code": {
+                        "type": "string",
+                        "maxLength": 16,
+                        "description": "optional sub region code"
+                    },
+                    "sub_region_name": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "description": "optional sub region name"
+                    },
+                    "city": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "name of the city"
+                    },
+                    "address": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "address of the group"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 32,
+                        "nullable": true,
+                        "default": null,
+                        "example": "+1 234 567 890"
+                    },
+                    "email": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "nullable": true,
+                        "default": null,
+                        "example": "someone@example.com"
+                    },
+                    "logo": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "/static/logos/logo-v1.jpeg",
+                        "description": "Path to binary image file of the logo on files store"
+                    }
+                }
+            },
+            "PaymentMethod": {
+                "type": "object",
+                "required": [
+                    "psp_id",
+                    "tsp_code",
+                    "name",
+                    "name_short",
+                    "is_active"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 120,
+                        "description": "Payment Method unique ID"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Name of the Payment Method to be presented to user\n"
+                    },
+                    "name_short": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Short name of the Payment Method to be presented in reports\n"
+                    },
+                    "logo": {
+                        "$ref": "#/components/schemas/Logo"
+                    },
+                    "queryFields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/QueryField"
+                        }
+                    },
+                    "submitFields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SubmitField"
+                        }
+                    },
+                    "country": {
+                        "maxLength": 3,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "Country of operation (ISO 3166-1 alpha-3)"
+                    },
+                    "currency": {
+                        "maxLength": 3,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "Local currency of service (Format: ISO 4217)"
+                    },
+                    "amount": {
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "stepHints": {
+                        "description": "Service Payment Steps to present to the user/agent",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PaymentSteps"
+                        }
+                    },
+                    "returnsDigitalVoucher": {
+                        "type": "boolean",
+                        "description": "If set to true , then the successful collection for this service will return a digital voucher code that can be queried from the system for presentation to the customer"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "description": "Defines if the Payment Method is active"
+                    }
+                }
+            },
+            "CorporateSubsidiaryServiceConfig": {
+                "type": "object",
+                "required": [
+                    "corporate_subsidiary_id",
+                    "corporate_group_id",
+                    "service_type",
+                    "service_name",
+                    "service_description",
+                    "is_customer_search_enabled",
+                    "is_supporting_customer_wallets",
+                    "is_active"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123,
+                        "description": "Primary Key"
+                    },
+                    "corporate_subsidiary_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123
+                    },
+                    "corporate_group_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123
+                    },
+                    "core_service_id": {
+                        "type": "string",
+                        "maxLength": 10,
+                        "description": "Service ID from the core"
+                    },
+                    "service_type": {
+                        "$ref": "#/components/schemas/enumCorporateServiceType"
+                    },
+                    "service_name": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "CorSub#1Topup"
+                    },
+                    "service_description": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "is_customer_search_enabled": {
+                        "type": "boolean",
+                        "description": "Defines whether customers for this particular Corporate Subsidiary\nare searchable\n"
+                    },
+                    "is_supporting_customer_wallets": {
+                        "type": "boolean",
+                        "description": "Defines whether customers of the Corporate Subsidiary can have\ntheir CustomerWallet.\n"
+                    },
+                    "import_schedule": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "*/2 * * * *",
+                        "description": "Customer import schedule in cron format."
+                    },
+                    "logo": {
+                        "$ref": "#/components/schemas/Logo"
+                    },
+                    "queryFields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/QueryField"
+                        }
+                    },
+                    "submitFields": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SubmitField"
+                        }
+                    },
+                    "country": {
+                        "maxLength": 3,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "Country of operation (ISO 3166-1 alpha-3)"
+                    },
+                    "currency": {
+                        "maxLength": 3,
+                        "minLength": 3,
+                        "type": "string",
+                        "description": "Local currency of service (Format: ISO 4217)"
+                    },
+                    "amount": {
+                        "$ref": "#/components/schemas/Amount"
+                    },
+                    "stepHints": {
+                        "description": "Service Payment Steps to present to the user/agent",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PaymentSteps"
+                        }
+                    },
+                    "returnsDigitalVoucher": {
+                        "type": "boolean",
+                        "description": "If set to true , then the successful collection for this service will return a digital voucher code that can be queried from the system for presentation to the customer"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "description": "Defines if the service is active for the related Subsidiary\n"
+                    }
+                }
+            },
+            "Customer": {
+                "required": [
+                    "customer_group_id",
+                    "name",
+                    "country",
+                    "region_code",
+                    "region_name",
+                    "city",
+                    "customer_business_no",
+                    "district",
+                    "division",
+                    "facility",
+                    "depot_name"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123,
+                        "description": "Auto-incremented unique identifier"
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Phony distribution inc.",
+                        "description": "Customer name"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 16,
+                        "example": "1 234 567 890",
+                        "description": "Customer phone number"
+                    },
+                    "email": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "example": "john.smith@example.com",
+                        "description": "Customer email address"
+                    },
+                    "country": {
+                        "type": "string",
+                        "maxLength": 2,
+                        "example": "CM"
+                    },
+                    "region_code": {
+                        "type": "string",
+                        "maxLength": 10,
+                        "description": "Optional region code"
+                    },
+                    "region_name": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "description": "Region name"
+                    },
+                    "sub_region_code": {
+                        "type": "string",
+                        "maxLength": 16,
+                        "description": "Optional sub region code"
+                    },
+                    "sub_region_name": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "description": "Optional sub region name"
+                    },
+                    "city": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Name of the city"
+                    },
+                    "address": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "The address of Customer"
+                    },
+                    "customer_business_no": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "example": "ABC 123",
+                        "description": "Customer business number"
+                    },
+                    "customer_status": {
+                        "type": "string",
+                        "maxLength": 32,
+                        "example": "Active",
+                        "description": "Customer status (STAT)"
+                    },
+                    "district": {
+                        "type": "string",
+                        "maxLength": 32,
+                        "example": "District (SDST) - Depot Number"
+                    },
+                    "division": {
+                        "type": "string",
+                        "maxLength": 32,
+                        "example": "Division (DIVI)"
+                    },
+                    "facility": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "example": "Facility (FACI)"
+                    },
+                    "depot_name": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "example": "Name of Depot"
+                    },
+                    "depot_manager": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "example": "Identifier of user responsible for warehouse"
+                    },
+                    "depot_manager_email": {
+                        "type": "string",
+                        "maxLength": 64,
+                        "example": "Email address of depot manager"
+                    },
+                    "customer_wallet_collection": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CustomerWallet"
+                        }
+                    }
+                }
+            },
+            "CustomerWallet": {
+                "required": [
+                    "customer_id",
+                    "tsp_code",
+                    "note",
+                    "wallet_identifier",
+                    "is_preferred"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 120,
+                        "description": "Customer wallet unique ID"
+                    },
+                    "customer_id": {
+                        "type": "integer",
+                        "example": 120,
+                        "description": "Many-To-One relationship with Customer"
+                    },
+                    "tsp_code": {
+                        "type": "integer",
+                        "example": 120,
+                        "description": "Universal TSP Code"
+                    },
+                    "note": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "description": "Free Text Note"
+                    },
+                    "wallet_identifier": {
+                        "type": "string",
+                        "example": "666666889",
+                        "maxLength": 20,
+                        "description": "Wallet Identifier to collect payment from"
+                    },
+                    "is_preferred": {
+                        "type": "boolean",
+                        "description": "true when this account is the default one"
+                    }
+                }
+            },
+            "Theme": {
+                "required": [
+                    "url",
+                    "url_type",
+                    "is_active"
+                ],
+                "properties": {
+                    "theme_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 123,
+                        "description": "Theme ID"
+                    },
+                    "url": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "example": "corporate-a",
+                        "description": "Unique URL string"
+                    },
+                    "url_type": {
+                        "$ref": "#/components/schemas/enumThemeUrlType"
+                    },
+                    "color_primary": {
+                        "type": "string",
+                        "maxLength": 7,
+                        "example": "#bada55",
+                        "description": "Theme primary color"
+                    },
+                    "color_secondary": {
+                        "type": "string",
+                        "maxLength": 7,
+                        "example": "#bada55",
+                        "description": "Theme secondary color"
+                    },
+                    "color_tertiary": {
+                        "type": "string",
+                        "maxLength": 7,
+                        "example": "#bada55",
+                        "description": "Theme secondary color"
+                    },
+                    "logo_for_payment_portal": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "/path/to/logo.jpg",
+                        "description": "Copies the path to the logo from the main entity. \nThis will be used in Smartcash Portal\n"
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "description": "Defines if the theme is active"
+                    }
+                }
+            },
+            "Logo": {
+                "type": "object",
+                "required": [
+                    "url",
+                    "hash"
+                ],
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "Points to a URL with the logo of the service"
+                    },
+                    "hash": {
+                        "type": "string",
+                        "description": "MD5 Hash of the logo provided via URL. This field stores the hash of the logo. If the logo is updated the hash will change."
+                    }
+                }
+            },
+            "Amount": {
+                "type": "object",
+                "required": [
+                    "min",
+                    "max",
+                    "denomination",
+                    "allowPartial",
+                    "allowOverpay",
+                    "allowCustomAmountEntry",
+                    "label",
+                    "hint"
+                ],
+                "properties": {
+                    "label": {
+                        "description": "Field label",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/I18NValue"
+                        }
+                    },
+                    "hint": {
+                        "description": "Field hint",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/I18NValue"
+                        }
+                    },
+                    "allowCustomAmountEntry": {
+                        "type": "boolean",
+                        "description": "If set to true, then the user is required to enter a custom amount to be paid within the min/max bounds stepped by the denomination"
+                    },
+                    "allowPartial": {
+                        "type": "boolean",
+                        "description": "If set to true, then less than the amount for the payment item can be paid"
+                    },
+                    "allowOverpay": {
+                        "type": "boolean",
+                        "description": "If set to true, then more than the amount for the payment item can be paid"
+                    },
+                    "min": {
+                        "type": "number",
+                        "format": "integer",
+                        "minimum": 1,
+                        "description": "Minimum amount that needs to be paid for this service in local currency"
+                    },
+                    "max": {
+                        "type": "number",
+                        "format": "integer",
+                        "minimum": 1,
+                        "description": "Maximum amount that can be paid for this service in local currency"
+                    },
+                    "denomination": {
+                        "type": "integer",
+                        "description": "Service payment denomination. The payment amount must be a multiple of the denomination value.\nExample:\n\n|Denomination|Amount|Valid|\n|-----|-----|-------|\n|1|100|true|\n|5|100|true|\n|200|100|false|\n|50|60|false|\n",
+                        "example": 50
+                    }
+                }
+            },
+            "QueryField": {
+                "type": "object",
+                "required": [
+                    "label",
+                    "input",
+                    "mandatory",
+                    "fieldId"
+                ],
+                "properties": {
+                    "label": {
+                        "description": "Field label",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/I18NValue"
+                        }
+                    },
+                    "hint": {
+                        "description": "Field hint",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/I18NValue"
+                        }
+                    },
+                    "regex": {
+                        "description": "Regex for front end field validation",
+                        "type": "string"
+                    },
+                    "input": {
+                        "$ref": "#/components/schemas/InputEnum"
+                    },
+                    "fieldId": {
+                        "$ref": "#/components/schemas/QueryFieldId"
+                    },
+                    "mandatory": {
+                        "description": "Defines if the field is required",
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "SubmitField": {
+                "type": "object",
+                "required": [
+                    "label",
+                    "input",
+                    "mandatory",
+                    "fieldId"
+                ],
+                "properties": {
+                    "label": {
+                        "description": "Field label",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/I18NValue"
+                        }
+                    },
+                    "hint": {
+                        "description": "Field hint",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/I18NValue"
+                        }
+                    },
+                    "regex": {
+                        "description": "Regex for front end field validation",
+                        "type": "string"
+                    },
+                    "input": {
+                        "$ref": "#/components/schemas/InputEnum"
+                    },
+                    "fieldId": {
+                        "$ref": "#/components/schemas/SubmitFieldTypeEnum"
+                    },
+                    "mandatory": {
+                        "description": "Defines if the field is required",
+                        "type": "boolean",
+                        "example": true
+                    }
+                }
+            },
+            "PaymentSteps": {
+                "required": [
+                    "lang",
+                    "steps"
+                ],
+                "type": "object",
+                "properties": {
+                    "lang": {
+                        "type": "string",
+                        "example": "en",
+                        "description": "Language of value text in iso notation (en | fr)"
+                    },
+                    "steps": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Step"
+                        }
+                    }
+                }
+            },
+            "Step": {
+                "required": [
+                    "order",
+                    "value"
+                ],
+                "type": "object",
+                "properties": {
+                    "order": {
+                        "type": "number",
+                        "description": "Step order starting at 1"
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "Step",
+                        "example": "Search by the customer name"
+                    }
+                }
+            },
+            "I18NValue": {
+                "required": [
+                    "lang",
+                    "value"
+                ],
+                "type": "object",
+                "properties": {
+                    "lang": {
+                        "type": "string",
+                        "example": "en",
+                        "description": "Language of value text in iso notation (en | fr)"
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "Label translation for UI presentation on device",
+                        "example": "Example"
+                    }
+                }
+            },
+            "localizedText": {
+                "description": "Localized text",
+                "type": "object",
+                "properties": {
+                    "text": {
+                        "description": "text",
+                        "type": "string"
+                    },
+                    "lang": {
+                        "description": "language in ISO 639-1 notation",
+                        "type": "string",
+                        "example": "en"
+                    }
+                }
+            },
+            "Translation": {
+                "required": [
+                    "language",
+                    "content"
+                ],
+                "type": "object",
+                "properties": {
+                    "language": {
+                        "type": "string",
+                        "description": "Target language to retrieve the translations for (e.g. 'en', 'fr', etc.)\n",
+                        "example": "en"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Translated text for this language",
+                        "example": "Translated string"
+                    }
+                }
+            },
+            "Error": {
+                "type": "object",
+                "properties": {
+                    "raw": {
+                        "type": "string",
+                        "description": "Original error response as is received from service provider, including header/body where applicable\n"
+                    },
+                    "providerErrorCode": {
+                        "type": "string",
+                        "description": "Original error code sent by the service provider that is extracted (if available)\n"
+                    },
+                    "mappedErrorCode": {
+                        "type": "string",
+                        "description": "Maviance Internal mapped error code"
+                    },
+                    "devMsg": {
+                        "type": "string",
+                        "description": "Custom notes/log/message from developer for easier error resolution by OPS team\"\n"
+                    },
+                    "severity": {
+                        "type": "string",
+                        "description": "Severity Level (NO|LOW|MEDIUM|HIGH) - will trigger notification actions in Smobilpay (e.g. alert ops on LOW and MEDIUM - alert management on HIGH)\n"
+                    },
+                    "customerMsg": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Translation"
+                        }
+                    }
+                }
+            },
+            "enumThemeUrlType": {
+                "description": "Defines the type of the partner\n\n|Status|Description|\n|-----|-----|\n|GROUP|GROUP|\n|SUBSIDIARY|SUBSIDIARY|\n|RESELLER|RESELLER|\n",
+                "type": "string",
+                "enum": [
+                    "GROUP",
+                    "SUBSIDIARY",
+                    "RESELLER"
+                ]
+            },
+            "enumChannel": {
+                "description": "SPA (Smartcash Portal = DigiPay), S3P, App, etc.\n\n|Status|Description|\n|-----|-----|\n|SPA|SPA|\n|S3P|S3P|\n|App|App|\n|WebPay|WebPay|\n",
+                "enum": [
+                    "SPA",
+                    "S3P",
+                    "App",
+                    "WebPay"
+                ],
+                "example": "SPA"
+            },
+            "enumPaymentStatus": {
+                "description": "Payment Status\n\n|Status|Description|\n|-----|-----|\n|PENDING|PENDING|\n|SUCCESS|SUCCESS|\n|FAILED|FAILED|\n",
+                "enum": [
+                    "PENDING",
+                    "SUCCESS",
+                    "FAILED"
+                ],
+                "example": "SUCCESS"
+            },
+            "InputEnum": {
+                "type": "string",
+                "description": "Type of accepted input (e.g. for keypad support)\n- \"NUMERICAL\": input will only be numerical\n- \"ALPHA_CS\": input will contain letters and numbers and is case sensitive\n- \"ALPHA_CI\": input will contain letters and numbers and is case insensitive\n- \"QRCODE\": scan qr code\n",
+                "enum": [
+                    "NUMERICAL",
+                    "ALPHA_CS",
+                    "ALPHA_CI",
+                    "QRCODE"
+                ]
+            },
+            "QueryFieldId": {
+                "type": "string",
+                "description": "Type of field\n- \"SVCNMB\": Service Number\n- \"CUSNMB\": Customer Number\n- \"BILLNMB\": Bill Number\n- \"QRCODE\": QR Code\n",
+                "enum": [
+                    "SVCNMB",
+                    "CUSNMB",
+                    "BILLNMB",
+                    "QRCODE"
+                ]
+            },
+            "SubmitFieldTypeEnum": {
+                "type": "string",
+                "description": "Type of data field to capture from user during payment submission\n- \"SVCNMB\": Service Number\n- \"CUSNMB\": Customer Number\n- \"PAYREF\": Custom Reference\n- \"CUSEMAIL\": Customer Email\n- \"CUSPHONE\": Customer Phone\n- \"CUSADDR\": Customer Address\n- \"CUSNAME\": Customer Name\n- \"OTP\": OTP\n",
+                "enum": [
+                    "PAYREF",
+                    "SVCNMB",
+                    "CUSNMB",
+                    "CUSPHONE",
+                    "CUSEMAIL",
+                    "CUSADDR",
+                    "CUSNAME",
+                    "OTP"
+                ]
+            },
+            "enumCorporateSubsidiaryServiceType": {
+                "description": "Defines service types that can be supported by Corporate Subsidiaries\n\n|Status|Description|\n|-----|-----|\n|DEPOSITFUNDS|DEPOSITFUNDS|\n|BILLPAY|BILLPAY|\n|PRODUCT|PRODUCT|\n",
+                "type": "string",
+                "enum": [
+                    "DEPOSITFUNDS",
+                    "BILLPAY",
+                    "PRODUCT"
+                ]
+            },
+            "enumCorporateServiceType": {
+                "description": "Defines Corporate Services\n\n|Status|Description|\n|-----|-----|\n|DEPOSITFUNDS|DEPOSITFUNDS|\n",
+                "type": "string",
+                "enum": [
+                    "DEPOSITFUNDS"
+                ]
+            }
+        }
+    }
+}
