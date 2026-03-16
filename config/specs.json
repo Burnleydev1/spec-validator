@@ -1,0 +1,10 @@
+{
+    "specs": [
+        {
+            "name": "Orders API",
+            "url": "https://raw.githubusercontent.com/your-org/specs/main/orders.yaml",
+            "owner": "team-backend",
+            "lastVerified": "2026-03-10"
+        }
+    ]
+}
