@@ -40,7 +40,7 @@ async function fetchSpec(specName) {
     throw new Error(`specFetcher: No spec found with name "${specName}"`);
   }
 
-  // Test mode — bypass GitHub fetch
+  // Test mode — bypass Confluence fetch
   if (TEST_SPEC) {
     return {
       spec: TEST_SPEC,
@@ -50,27 +50,53 @@ async function fetchSpec(specName) {
     };
   }
 
+  const domain = process.env.CONFLUENCE_DOMAIN;
+  const email = process.env.CONFLUENCE_EMAIL;
+  const token = process.env.CONFLUENCE_API_TOKEN;
+
+  if (!domain || !email || !token) {
+    throw new Error('specFetcher: Missing CONFLUENCE_DOMAIN, CONFLUENCE_EMAIL or CONFLUENCE_API_TOKEN in environment');
+  }
+
+  const auth = Buffer.from(`${email}:${token}`).toString('base64');
+  const url = `https://${domain}/wiki/rest/api/content/${specEntry.pageId}?expand=body.storage`;
+
   let response;
   try {
-    response = await fetch(specEntry.url);
+    response = await fetch(url, {
+      headers: {
+        'Authorization': `Basic ${auth}`,
+        'Accept': 'application/json',
+      },
+    });
   } catch (err) {
-    throw new Error(`specFetcher: Failed to fetch spec from ${specEntry.url} — ${err.message}`);
+    throw new Error(`specFetcher: Network error fetching Confluence page — ${err.message}`);
   }
 
   if (!response.ok) {
-    throw new Error(`specFetcher: HTTP ${response.status} fetching spec from ${specEntry.url}`);
+    throw new Error(`specFetcher: Confluence returned HTTP ${response.status} for page ${specEntry.pageId}`);
   }
 
-  const rawText = await response.text();
+  const data = await response.json();
+  const htmlContent = data.body?.storage?.value;
+
+  if (!htmlContent) {
+    throw new Error(`specFetcher: No content found on Confluence page ${specEntry.pageId}`);
+  }
+
+  // Extract content from code block — Confluence stores it as <ac:plain-text-body><![CDATA[...]]></ac:plain-text-body>
+  const cdataMatch = htmlContent.match(/<!\[CDATA\[([\s\S]*?)\]\]>/);
+  if (!cdataMatch) {
+    throw new Error(`specFetcher: No code block (CDATA) found on Confluence page ${specEntry.pageId}. Make sure the spec is inside a Code Block macro.`);
+  }
+
+  const rawSpec = cdataMatch[1].trim();
 
   let parsedSpec;
   try {
-    // Try JSON first, fall back to YAML
-    parsedSpec = specEntry.url.endsWith('.json')
-      ? JSON.parse(rawText)
-      : yaml.load(rawText);
+    parsedSpec = rawSpec.startsWith('{') ? JSON.parse(rawSpec) : yaml.load(rawSpec);
   } catch (err) {
-    throw new Error(`specFetcher: Failed to parse spec — ${err.message}`);
+    throw new Error(`specFetcher: Failed to parse spec from Confluence page ${specEntry.pageId} — ${err.message}`);
   }
 
   return {

@@ -1,10 +1,34 @@
 {
     "specs": [
         {
-            "name": "Orders API",
-            "url": "https://raw.githubusercontent.com/your-org/specs/main/orders.yaml",
-            "owner": "team-backend",
-            "lastVerified": "2026-03-10"
+            "name": "Customer Portal API",
+            "pageId": "3721068545",
+            "owner": "team-cps",
+            "lastVerified": "2026-03-16"
+        },
+        {
+            "name": "Payments API",
+            "pageId": "3721068546",
+            "owner": "team-cps",
+            "lastVerified": "2026-03-16"
+        },
+        {
+            "name": "ERP Connector API",
+            "pageId": "3367010305",
+            "owner": "team-cps",
+            "lastVerified": "2026-03-16"
+        },
+        {
+            "name": "Management API",
+            "pageId": "3409903617",
+            "owner": "team-cps",
+            "lastVerified": "2026-03-16"
+        },
+        {
+            "name": "Smartcash Generic Corporate Payment API",
+            "pageId": "3452076036",
+            "owner": "team-smartcash",
+            "lastVerified": "2026-03-16"
         }
     ]
 }
