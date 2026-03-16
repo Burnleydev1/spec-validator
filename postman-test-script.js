@@ -15,7 +15,7 @@
 
   const payload = {
     specName: specName,
-    url: pm.request.url.toString(),
+    url: '/' + pm.request.url.getPath().replace(/^\//, '').split('/').slice(2).join('/'),
     method: pm.request.method,
     statusCode: pm.response.code,
     responseBody: pm.response.json(),

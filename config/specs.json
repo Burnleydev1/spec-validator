@@ -2,31 +2,31 @@
     "specs": [
         {
             "name": "Customer Portal API",
-            "pageId": "3721068545",
+            "url": "https://raw.githubusercontent.com/Burnleydev1/spec-validator/master/specs/customer-portal-api.yaml",
             "owner": "team-cps",
             "lastVerified": "2026-03-16"
         },
         {
             "name": "Payments API",
-            "pageId": "3721068546",
+            "url": "https://raw.githubusercontent.com/Burnleydev1/spec-validator/master/specs/payments-api.yaml",
             "owner": "team-cps",
             "lastVerified": "2026-03-16"
         },
         {
             "name": "ERP Connector API",
-            "pageId": "3367010305",
+            "url": "https://raw.githubusercontent.com/Burnleydev1/spec-validator/master/specs/erp-connector-api.yaml",
             "owner": "team-cps",
             "lastVerified": "2026-03-16"
         },
         {
             "name": "Management API",
-            "pageId": "3409903617",
+            "url": "https://raw.githubusercontent.com/Burnleydev1/spec-validator/master/specs/management-api.yaml",
             "owner": "team-cps",
             "lastVerified": "2026-03-16"
         },
         {
-            "name": "Smartcash Generic Corporate Payment API",
-            "pageId": "3452076036",
+            "name": "Smartcash Corporate Payment API",
+            "url": "https://raw.githubusercontent.com/Burnleydev1/spec-validator/master/specs/smartcash-corporate-payment-api.yaml",
             "owner": "team-smartcash",
             "lastVerified": "2026-03-16"
         }
